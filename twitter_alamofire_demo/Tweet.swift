@@ -11,7 +11,7 @@ import Foundation
 class Tweet {
     
     // MARK: Properties
-    var id: Int64 // For favoriting, retweeting & replying
+    var id: Int64? // For favoriting, retweeting & replying
     var text: String // Text content of tweet
     var favoriteCount: Int? // Update favorite count label
     var favorited: Bool? // Configure favorite button
@@ -22,14 +22,24 @@ class Tweet {
     
     // MARK: - Create initializer with dictionary
     init(dictionary: [String: Any]) {
-        id = dictionary["id"] as! Int64
+        if let twitid: NSNumber = dictionary["id"] as? NSNumber{
+            id = twitid.int64Value
+            
+        }
+        
+      
+        
         text = dictionary["text"] as! String
         favoriteCount = dictionary["favorite_count"] as? Int
         favorited = dictionary["favorited"] as? Bool
         retweetCount = dictionary["retweet_count"] as! Int
+        //print("retweet count \(retweetCount)")
         retweeted = dictionary["retweeted"] as! Bool
         
         let user = dictionary["user"] as! [String: Any]
+        
+        let g = user["screen_name"]
+        print("screen name \(g.debugDescription)")
         self.user = User(dictionary: user)
         
         let createdAtOriginalString = dictionary["created_at"] as! String
@@ -43,6 +53,7 @@ class Tweet {
         formatter.timeStyle = .none
         // Convert Date to String
         createdAtString = formatter.string(from: date)
+        // print("created at \(createdAtString)")
         
         
     }
