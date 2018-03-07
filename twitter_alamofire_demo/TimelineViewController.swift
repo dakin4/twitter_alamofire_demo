@@ -14,14 +14,14 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     var tweets: [Tweet] = []
     
     @IBOutlet weak var tableView: UITableView!
-    var re = 0
+    
     var refreshControl: UIRefreshControl!
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.dataSource = self
         tableView.delegate = self
-        var refreshControl = UIRefreshControl ()
+         refreshControl = UIRefreshControl ()
         //tableView.rowHeight = UITableViewAutomaticDimension
        // tableView.estimatedRowHeight = 200
      
@@ -35,11 +35,11 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func didPullToRefresh (_ refreshController: UIRefreshControl){
-       // refreshController.beginRefreshing()
-        re = 1
+       
+       
         print("pull")
         hometimeline()
-       // refreshControl.endRefreshing()
+       refreshControl.endRefreshing()
 
         
     }
