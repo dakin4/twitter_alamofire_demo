@@ -66,19 +66,11 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell", for: indexPath) as! TweetCell
         
         cell.tweet = tweets[indexPath.row]
-        
-        cell.username = tweets[indexPath.row]
-        
+    
         if let pic = tweets[indexPath.row].user.profilepic {
             cell.ProfilePic.af_setImage(withURL: pic) 
         }
-        cell.screename = tweets[indexPath.row]
         
-        cell.date = tweets[indexPath.row]
-        
-        cell.retweet = tweets[indexPath.row]
-        
-        cell.favorite = tweets[indexPath.row]
         return cell
     }
     

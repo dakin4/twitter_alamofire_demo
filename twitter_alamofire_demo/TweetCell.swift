@@ -14,7 +14,6 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var CreatedAtLabel: UILabel!
     @IBOutlet weak var ScreennameLabel: UILabel!
     @IBOutlet weak var tweetTextLabel: UILabel!
-    
     @IBOutlet weak var favoriteLabel: UILabel!
     @IBOutlet weak var retweetLabel: UILabel!
     @IBOutlet weak var replyLabel: UILabel!
@@ -30,59 +29,56 @@ class TweetCell: UITableViewCell {
     
     
     @IBAction func FavoriteClicked(_ sender: AnyObject) {
+        
+        APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
+            if let  error = error {
+                print("Error favoriting tweet: \(error.localizedDescription)")
+            } else if let tweet = tweet {
+                print("Successfully favorited the following Tweet: \n\(tweet.text)")
+                var count = tweet.favoriteCount! + 1
+                self.favoriteLabel.text = String(count)
+            }
+        }
+
     }
     
     @IBAction func DirectMessageClicked(_ sender: AnyObject) {
     }
     
-    
-    // taking the text of the tweet
-    var tweet: Tweet! {
-        didSet {
+    var tweet: Tweet!{
+        
+        didSet{
             tweetTextLabel.text = tweet.text
-        }
-    }
-    
-    var username: Tweet!{
-        didSet{
-            UserNameLabel.text = username.user.name
-        }
-        
-    }
-  
-    var screename : Tweet!{
-        didSet{
+            UserNameLabel.text = tweet.user.name
             var screen = "@"
-            var scr = screen + screename.user.screenName!
+            var scr = screen + tweet.user.screenName!
             ScreennameLabel.text = scr
-        }
-        
-    }
-    
-    var date: Tweet!{
-        
-        didSet{
-           CreatedAtLabel.text = date.createdAtString
             
-        }
-    }
-    var retweet: Tweet!{
-        didSet{
-            var count = retweet.retweetCount
-            
+            CreatedAtLabel.text = tweet.createdAtString
+            var count = tweet.retweetCount
             retweetLabel.text = String(count)
-            //print("Retweet label \(count)")
+            if let cnt = tweet.favoriteCount{
+                
+                favoriteLabel.text = String(cnt)
+            }
+            else
+            {
+                favoriteLabel.text = String(0)
+                
+            }
+
         }
     }
     
-    var favorite: Tweet!{
-    didSet{
-    var count = favorite.favoriteCount!
+  
     
-   favoriteLabel.text = String(count)
     
-    }
-    }
+    
+    
+    
+    
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
