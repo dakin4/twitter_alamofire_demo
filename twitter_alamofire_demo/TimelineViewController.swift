@@ -18,7 +18,6 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     var refreshControl: UIRefreshControl!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         tableView.dataSource = self
         tableView.delegate = self
          refreshControl = UIRefreshControl ()
@@ -43,6 +42,15 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
 
         
     }
+    
+    
+    
+    @IBAction func ComposeButtonClicked(_ sender: AnyObject) {
+        
+        performSegue(withIdentifier: "composeSegue", sender: self)
+        
+    }
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tweets.count
@@ -89,6 +97,40 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
     @IBAction func didTapLogout(_ sender: Any) {
         APIManager.shared.logout()
     }
+    
+   
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if (segue.identifier == "detailsegue"){
+            
+        
+        //sender is person or object that inisiated the segue
+        let cell = sender as! UITableViewCell
+        
+        if let indexPath = tableView.indexPath(for: cell){
+            
+            let tweet = tweets[indexPath.row]
+            
+            
+            let detail = segue.destination as! DetailViewController
+        
+            detail.tweet = tweet
+            
+        }
+        }
+    
+        else if (segue.identifier == "composeSegue"){
+            
+            print("composing")
+        }
+    }
+    
+    
+
+
+    
+    
+    
     
     
     /*
