@@ -123,9 +123,10 @@ class APIManager: SessionManager {
     
     // Favorite a Tweet
     func favorite(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
-        var urlString = "https://api.twitter.com/1.1/favorites/create.json?"
+        var urlString = "https://api.twitter.com/1.1/favorites/create.json"
+        var id = tweet.id
         
-        let url:URL = URL(fileURLWithPath: urlString)
+        let url = URL(string: urlString)!
         let parameters = ["id": tweet.id]
         request(url, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
             if response.result.isSuccess,
