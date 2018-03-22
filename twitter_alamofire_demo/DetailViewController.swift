@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AlamofireImage
 
 class DetailViewController: UIViewController {
 
@@ -65,7 +66,7 @@ class DetailViewController: UIViewController {
         }
         
        
-            
+            ProfileImageView.af_setImage(withURL: tweet.user.profilepic!)
           retweetCountLabel.text  = String(tweet.retweetCount)
         
         

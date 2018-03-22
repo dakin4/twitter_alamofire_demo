@@ -118,20 +118,18 @@ class APIManager: SessionManager {
     }
     
     
-    
-    
-    
     // Favorite a Tweet
     func favorite(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
-        var urlString = "https://api.twitter.com/1.1/favorites/create.json"
-        var id = tweet.id
-        
-        let url = URL(string: urlString)!
+    let urlString = "https://api.twitter.com/1.1/favorites/create.json"
+       // var id = tweet.id!
+        //var idd = String(id)
+        //urlString = urlString + idd
+        //let url = URL(string: urlString)!
         let parameters = ["id": tweet.id]
-        request(url, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
-            if response.result.isSuccess,
-                let tweetDictionary = response.result.value as? [String: Any] {
-                let tweet = Tweet(dictionary: tweetDictionary)
+        request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
+            if response.result.isSuccess{
+                let tweetDictionary = response.result.value as? [String: Any]
+                let tweet = Tweet(dictionary: tweetDictionary!)
                 completion(tweet, nil)
             } else {
                 completion(nil, response.result.error)
@@ -142,6 +140,30 @@ class APIManager: SessionManager {
     // MARK: TODO: Un-Favorite a Tweet
     
     // MARK: TODO: Retweet
+    func retweet(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
+       var id = tweet.id!
+        var idd = String(id)
+        var urlString = "https://api.twitter.com/1.1/statuses/retweet/\(idd).json"
+         
+        
+        urlString = urlString + idd
+        urlString = urlString + ".json"
+        //let url = URL(string: urlString)!
+        let parameters = ["id": tweet.id]
+        request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
+            if response.result.isSuccess{
+                let tweetDictionary = response.result.value as? [String: Any]
+                let tweet = Tweet(dictionary: tweetDictionary!)
+                completion(tweet, nil)
+            } else
+                
+            {
+                completion(nil, response.result.error)
+            }
+            
+        }
+    }
+
     
     // MARK: TODO: Un-Retweet
     

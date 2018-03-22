@@ -56,6 +56,8 @@ class ComposeViewController: UIViewController,ComposeViewControllerDelegate, UIT
 
         TweetText.delegate = self
         // Do any additional setup after loading the view.
+        
+        
     }
 
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
