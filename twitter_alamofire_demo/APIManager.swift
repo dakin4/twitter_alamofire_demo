@@ -13,7 +13,7 @@ import OAuthSwiftAlamofire
 import KeychainAccess
 
 class APIManager: SessionManager {
-    
+   
     // MARK: TODO: Add App Keys
     static let consumerKey = "SlLZS6afkMul0KGvzCPF6vblU"
     static let consumerSecret = "HcqnXhUIbWp6sLK6waMAmLlfENPR7P7Er3VW3QybLY7AoqfjVb"
@@ -39,6 +39,11 @@ class APIManager: SessionManager {
                     failure(error)
                 } else if let user = user {
                     print("Welcome \(user.name)")
+                    //me
+                
+                    //user.se
+                    //calling a class obj within the class what does this do
+                  
                     
                     // MARK: TODO: set User.current, so that it's persisted
                     
@@ -71,11 +76,43 @@ class APIManager: SessionManager {
                         completion(nil, JSONError.parsing("Unable to create user dictionary"))
                         return
                     }
+                    print("userdict: \(userDictionary)")
                     completion(User(dictionary: userDictionary), nil)
                 }
         }
     }
-        
+    
+    func getUserTweets(user:User, completion: @escaping ([Tweet]?, Error?) -> ()){
+        let parameters = ["id": user.userid]
+        let urlstring = URL(string: "https://api.twitter.com/1.1/statuses/lookup.json")
+    
+        request(urlstring!, method: .post, parameters: parameters, encoding: URLEncoding.queryString)
+            .validate()
+            .responseJSON { (response) in
+                switch response.result {
+                case .failure(let error):
+                    completion(nil, error)
+                    return
+                case .success:
+                    guard let tweetDictionaries = response.result.value as? [[String: Any]] else {
+                        print("Failed to parse tweets")
+                        let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey : "Failed to parse tweets"])
+                        completion(nil, error)
+                        return
+                    }
+                    
+                    let data = NSKeyedArchiver.archivedData(withRootObject: tweetDictionaries)
+                    UserDefaults.standard.set(data, forKey: "hometimeline_tweets")
+                    UserDefaults.standard.synchronize()
+                    
+                    let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
+                        Tweet(dictionary: dictionary)
+                    })
+                }
+            }
+        }
+    
+    
     func getHomeTimeLine(completion: @escaping ([Tweet]?, Error?) -> ()) {
 
         // This uses tweets from disk to avoid hitting rate limit. Comment out if you want fresh
@@ -182,7 +219,8 @@ class APIManager: SessionManager {
     }
     
     // MARK: TODO: Get User Timeline
-    
+    //get banner picture for user, get tweet data ie amount of tweets, get tweets//
+    // use one of the data fetches above to understand what to do for this function copy and then go through each line to understand
     
     //--------------------------------------------------------------------------------//
     

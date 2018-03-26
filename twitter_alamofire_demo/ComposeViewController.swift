@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AlamofireImage
+
 
 class ComposeViewController: UIViewController,ComposeViewControllerDelegate, UITextViewDelegate {
 
@@ -15,6 +17,10 @@ class ComposeViewController: UIViewController,ComposeViewControllerDelegate, UIT
     @IBOutlet weak var CharacterCountLabel: UILabel!
   
     @IBOutlet weak var TweetText: UITextView!
+    var g = 4
+  
+  var  curuser: User?
+    
     
     var editText: Int = 0
     var delegate: ComposeViewControllerDelegate?
@@ -55,6 +61,10 @@ class ComposeViewController: UIViewController,ComposeViewControllerDelegate, UIT
         super.viewDidLoad()
 
         TweetText.delegate = self
+       
+        profilePicImage.af_setImage(withURL: curuser!.profilepic!)
+        
+        
         // Do any additional setup after loading the view.
         
         

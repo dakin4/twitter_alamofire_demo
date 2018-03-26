@@ -12,10 +12,28 @@ import AlamofireImage
 class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tweets: [Tweet] = []
+    var curUser: User?{
+        didSet{
+            
+            print("cur user set")
+            APIManager.shared.getUserTweets(user: curUser!) { (tweets, error) in
+                print("get user tweets apimanager")
+                guard let tweets = tweets else{
+                    print("no user tweets \(error?.localizedDescription)")
+                    return
+                }
+                print("user tweets \(tweets[1].createdAtString)")
+            }
+           
+        }
+        
+    }
     
     @IBOutlet weak var tableView: UITableView!
     
     var refreshControl: UIRefreshControl!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -31,7 +49,24 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
 
         hometimeline()
         
+        APIManager.shared.getCurrentAccount { (currentuser, error) in
+            
+            guard let currentuser = currentuser else {
+                print("cant find current user error: (error?.localizedDescription)")
+               return
+            }
+            
+            self.curUser = currentuser
+            print("current user profile \(self.curUser)")
+           
+           
+ 
+            
+        }
+
+        
     }
+    
     
     func didPullToRefresh (_ refreshController: UIRefreshControl){
        
@@ -120,6 +155,9 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         }
     
         else if (segue.identifier == "composeSegue"){
+            let compose = segue.destination as! ComposeViewController
+            
+            compose.curuser = curUser
             
             print("composing")
         }
