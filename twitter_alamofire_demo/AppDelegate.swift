@@ -25,6 +25,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = loginVC
         }
         
+        if User.current != nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let defaultViewController = storyboard.instantiateViewController(withIdentifier: "TweetsNavigationController")
+            window?.rootViewController = defaultViewController
+        }
+        
+        
+        
+        
+        
         return true
     }
     

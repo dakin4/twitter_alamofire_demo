@@ -41,12 +41,12 @@ class TweetCell: UITableViewCell {
     
     @IBAction func FavoriteClicked(_ sender: AnyObject) {
      
-        APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
+        APIManager.shared.favorite(tweet) { (ntweet: Tweet?, error: Error?) in
             if let  error = error {
                 print("Error favoriting tweet: \(error.localizedDescription)")
-            } else if let tweet = tweet {
-                print("Successfully favorited the following Tweet: \n\(tweet.text)")
-                var count = tweet.favoriteCount! + 1
+            } else if let ntweet = ntweet {
+                print("Successfully favorited the following Tweet: \n\(ntweet.text)")
+                var count = ntweet.favoriteCount! 
                 self.favoriteLabel.text = String(count)
             }
         }

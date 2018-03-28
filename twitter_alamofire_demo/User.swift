@@ -20,9 +20,11 @@ class User {
     var userid: Int64?
     var favoritecount: Int?
 
+    var dictionary: [String: Any]?
     
     
     init(dictionary: [String: Any]) {
+        self.dictionary = dictionary
         name = dictionary["name"] as! String
         
         if let profile: String = dictionary["profile_image_url_https"] as? String{
@@ -46,9 +48,39 @@ class User {
         //userid = dictionary["id"] as! Int64
         favoritecount = dictionary["favourites_count"] as! Int
         print("frineds \(friendcount)")
-        
-        
-        
+ 
 
     }
+    
+    static var current: User?{
+        get{
+            //if current == nil{
+                let defaults = UserDefaults.standard
+                if let userData = defaults.data(forKey: "currentUserData"){
+                    let dictionary = try! JSONSerialization.jsonObject(with: userData, options: []) as! [String: Any]
+                    current = User(dictionary: dictionary)
+              //  }
+            }
+            return current
+        }
+        set(user){
+            current = user
+            let defaults = UserDefaults.standard
+            if let user = user{
+                let data = try! JSONSerialization.data(withJSONObject: user.dictionary, options: [])
+                defaults.set(data, forKey: "currentUserData")
+            }else{
+                defaults.removeObject(forKey: "currentUserData")
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
