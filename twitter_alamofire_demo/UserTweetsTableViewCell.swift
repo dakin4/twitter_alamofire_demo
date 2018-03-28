@@ -1,28 +1,27 @@
 //
-//  TweetCell.swift
+//  UserTweetsTableViewCell.swift
 //  twitter_alamofire_demo
 //
-//  Created by Charles Hieger on 6/18/17.
-//  Copyright © 2017 Charles Hieger. All rights reserved.
+//  Created by David King on 3/27/18.
+//  Copyright © 2018 Charles Hieger. All rights reserved.
 //
 
 import UIKit
 import AlamofireImage
 
-class TweetCell: UITableViewCell {
-    
+class UserTweetsTableViewCell: UITableViewCell {
+   
     @IBOutlet weak var CreatedAtLabel: UILabel!
-    @IBOutlet weak var ScreennameLabel: UILabel!
     @IBOutlet weak var tweetTextLabel: UILabel!
-    @IBOutlet weak var favoriteLabel: UILabel!
-    @IBOutlet weak var retweetLabel: UILabel!
-    @IBOutlet weak var replyLabel: UILabel!
-    @IBOutlet weak var ProfilePic: UIImageView!
+
+    @IBOutlet weak var ScreennameLabel: UILabel!
     @IBOutlet weak var UserNameLabel: UILabel!
-    
-    
+    @IBOutlet weak var ProfilePic: UIImageView!
+    @IBOutlet weak var retweetLabel: UILabel!
+    @IBOutlet weak var favoriteLabel: UILabel!
     @IBAction func ReplyClicked(_ sender: AnyObject) {
     }
+    
     
     @IBAction func RetweetClicked(_ sender: AnyObject) {
         APIManager.shared.retweet(tweet) { (tweet: Tweet?, error: Error?) in
@@ -35,12 +34,10 @@ class TweetCell: UITableViewCell {
             }
         }
         
-        
 
     }
     
     @IBAction func FavoriteClicked(_ sender: AnyObject) {
-     
         APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
             if let  error = error {
                 print("Error favoriting tweet: \(error.localizedDescription)")
@@ -57,8 +54,6 @@ class TweetCell: UITableViewCell {
     }
     
     
-    
-  
     
     var tweet: Tweet!{
         
@@ -81,29 +76,20 @@ class TweetCell: UITableViewCell {
                 favoriteLabel.text = String(0)
                 
             }
-
+            
         }
     }
-    
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-    
+    @IBOutlet weak var replyLabel: UILabel!
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
+
         // Configure the view for the selected state
     }
-    
+
 }

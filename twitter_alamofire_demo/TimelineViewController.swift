@@ -12,17 +12,18 @@ import AlamofireImage
 class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var tweets: [Tweet] = []
+    var UserTweets: [Tweet] = []
     var curUser: User?{
         didSet{
             
-            print("cur user set")
+            print("cusar user set")
             APIManager.shared.getUserTweets(user: curUser!) { (tweets, error) in
                 print("get user tweets apimanager")
-                guard let tweets = tweets else{
-                    print("no user tweets \(error?.localizedDescription)")
-                    return
-                }
-                print("user tweets \(tweets[1].createdAtString)")
+              //  guard let tweets = tweets else{
+                 //   print("no user tweets \(error?.localizedDescription)")
+                //    return
+               // }
+                //print("user tweets \(tweets[1].createdAtString)")
             }
            
         }
@@ -56,10 +57,21 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
                return
             }
             
+            
             self.curUser = currentuser
-            print("current user profile \(self.curUser)")
+            print("current user profile \(self.curUser!.screenName)")
            
-           
+            APIManager.shared.getUserTweets(user: self.curUser!) { (tweets, error) in
+                print("get user tweets apimanager")
+                 guard let tweets = tweets else{
+                    
+                   print("no user tweets \(error?.localizedDescription)")
+                    return
+                 }
+                self.UserTweets = tweets
+                print("user tweets \(tweets[1].createdAtString)")
+            }
+
  
             
         }
@@ -160,6 +172,15 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
             compose.curuser = curUser
             
             print("composing")
+        }
+        
+        else if (segue.identifier == "UserProfile"){
+          
+            let userprofile = segue.destination as! UserTimelineViewController
+            
+            userprofile.UserTweets = UserTweets
+                        
+            
         }
     }
     

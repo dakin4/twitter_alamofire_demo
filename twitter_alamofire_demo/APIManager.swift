@@ -83,14 +83,17 @@ class APIManager: SessionManager {
     }
     
     func getUserTweets(user:User, completion: @escaping ([Tweet]?, Error?) -> ()){
-        let parameters = ["id": user.userid]
-        let urlstring = URL(string: "https://api.twitter.com/1.1/statuses/lookup.json")
+        let parameters = ["user_id": user.userid]
+        
+        print("user id user tweets \(user.userid!)")
+        let urlstring = URL(string: "https://api.twitter.com/1.1/statuses/user_timeline.json")
     
-        request(urlstring!, method: .post, parameters: parameters, encoding: URLEncoding.queryString)
+        request(urlstring!, method: .get, parameters: parameters)
             .validate()
             .responseJSON { (response) in
                 switch response.result {
                 case .failure(let error):
+                    print("failure usertweets ")
                     completion(nil, error)
                     return
                 case .success:
@@ -108,6 +111,7 @@ class APIManager: SessionManager {
                     let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
                         Tweet(dictionary: dictionary)
                     })
+                    completion(tweets,nil)
                 }
             }
         }
