@@ -54,17 +54,14 @@ class User {
     
     static var current: User?{
         get{
-            //if current == nil{
-                let defaults = UserDefaults.standard
-                if let userData = defaults.data(forKey: "currentUserData"){
-                    let dictionary = try! JSONSerialization.jsonObject(with: userData, options: []) as! [String: Any]
-                    current = User(dictionary: dictionary)
-              //  }
+            let defaults = UserDefaults.standard
+            if let userData = defaults.data(forKey: "currentUserData"){
+                let dictionary = try! JSONSerialization.jsonObject(with: userData, options: []) as! [String: Any]
+                return  User(dictionary: dictionary)
             }
-            return current
+            return nil
         }
         set(user){
-            current = user
             let defaults = UserDefaults.standard
             if let user = user{
                 let data = try! JSONSerialization.data(withJSONObject: user.dictionary, options: [])
@@ -73,14 +70,5 @@ class User {
                 defaults.removeObject(forKey: "currentUserData")
             }
         }
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+}
 }

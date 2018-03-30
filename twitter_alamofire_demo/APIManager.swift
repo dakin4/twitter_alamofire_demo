@@ -47,7 +47,9 @@ class APIManager: SessionManager {
                     
                     // MARK: TODO: set User.current, so that it's persisted
                     
+                    
                     success()
+                    User.current = user
                 }
             })
         }) { (error) in
@@ -59,8 +61,9 @@ class APIManager: SessionManager {
         clearCredentials()
         
         // TODO: Clear current user by setting it to nil
-
+        User.current = nil
         NotificationCenter.default.post(name: NSNotification.Name("didLogout"), object: nil)
+        
     }
 
     func getCurrentAccount(completion: @escaping (User?, Error?) -> ()) {
